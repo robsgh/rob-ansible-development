@@ -1,0 +1,29 @@
+---
+- hosts: "{{ vm_name }}"
+  tasks:
+  - name: Change xen tag to production
+    include_role: 
+      name: xen-tags
+    vars:
+      vm_rm_tag: "nonproduction"
+      vm_add_tag: "production"
+
+  - name: Add production public key to authorized_keys
+    become: yes
+    authorized_key:
+      user: schmidtadmin 
+      state: present
+      key: '{{ item }}'
+    with_file:
+    - keys/production
+
+  - name: Remove development public key from authorized_keys
+    become: yes
+    authorized_key:
+      user: schmidtadmin
+      state: absent
+      key: '{{ item }}'
+    with_file:
+    - keys/development
+
+  

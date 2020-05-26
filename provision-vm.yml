@@ -1,0 +1,19 @@
+---
+- hosts: "{{ vm_name }}"
+  tasks:
+  - name: Set VM hostname
+    become: yes
+    hostname:
+      name: "{{ vm_name }}"
+    notify:
+    - renew dhcp
+
+  - name: Reboot machine
+    become: yes
+    reboot:
+
+  handlers:
+  - name: renew dhcp
+    become: yes
+    command: dhclient -r
+    ignore_errors: yes

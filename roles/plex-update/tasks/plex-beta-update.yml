@@ -1,0 +1,16 @@
+---
+- name: Download beta {{ beta_channel_id }} from plex.tv/downloads
+  get_url:
+    url: https://downloads.plex.tv/plex-media-server-new/{{ beta_channel_id }}/debian/plexmediaserver_{{ beta_channel_id }}_amd64.deb
+    dest: /tmp/newplex.deb
+
+- name: Install Plex beta release
+  apt:
+    deb: /tmp/newplex.deb
+  register: update_response
+
+- name: Cleanup temporary file
+  file:
+    path: /tmp/newplex.deb
+    state: absent
+...

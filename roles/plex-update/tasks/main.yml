@@ -1,0 +1,7 @@
+---
+- include_tasks: plex-beta-update.yml
+  when: beta_channel_id != ''
+
+- include_tasks: plex-public-update.yml
+  when: beta_channel_id == ''
+...

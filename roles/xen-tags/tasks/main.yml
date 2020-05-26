@@ -1,0 +1,18 @@
+---
+- name: Execute tag script to remove {{ vm_rm_tag }} from {{ vm_name }}
+  command: /opt/awx-venvs/xenserver/bin/python {{ playbook_dir }}/xen-tags.py rm {{ vm_name }} {{ vm_rm_tag }} 
+  environment:
+    XENSERVER_HOST: "{{ xenserver_host }}"
+    XENSERVER_USER: "{{ xenserver_user }}"
+    XENSERVER_PASSWORD: "{{ xenserver_password }}"
+  when: vm_rm_tag is defined and vm_rm_tag != ""
+  delegate_to: localhost
+
+- name: Execute tag script to add {{ vm_add_tag }} to {{ vm_name }}
+  command: /opt/awx-venvs/xenserver/bin/python {{ playbook_dir }}/xen-tags.py add {{ vm_name }} {{ vm_add_tag }}
+  environment:
+    XENSERVER_HOST: "{{ xenserver_host }}"
+    XENSERVER_USER: "{{ xenserver_user }}"
+    XENSERVER_PASSWORD: "{{ xenserver_password }}"
+  when: vm_add_tag is defined and vm_add_tag != ""
+  delegate_to: localhost

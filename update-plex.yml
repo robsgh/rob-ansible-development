@@ -1,0 +1,23 @@
+# file: update-plex.yml
+# desc: update plex to latest version
+---
+- hosts: plexmediaserver
+  become: yes
+  tasks:
+    - include_role: 
+        name: plex-update
+
+    - name: Alert new update
+      debug:
+        msg: "PlexMediaServer was updated!"
+      when:
+        - update_response is defined
+        - update_response.changed == true
+
+    - name: Alert already updated
+      debug:
+        msg: "PlexMediaServer is already at latest version!"
+      when:
+        - update_response is defined
+        - update_response.changed == false
+...
